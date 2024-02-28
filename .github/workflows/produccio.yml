@@ -18,6 +18,10 @@ jobs:
         run: |
           cd vue/vue-project
           npm run lint
+           if [ $? -ne 0 ]; then
+            echo "ESLint encontró errores. Deteniendo el flujo de trabajo."
+            exit 1
+          fi
 
       - name: SCP a producció
         run: |
