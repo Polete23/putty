@@ -15,17 +15,17 @@ jobs:
 
       - name: Instal·lar dependències i construir el projecte Vue
         run: |
-          cd vue/vue-latest
+          cd vue/vue-project
           npm ci
           npm run build
 
       - name: Ejecutar ESLint en el código
         run: |
-          cd vue/vue-latest
+          cd vue/vue-project
           npm run lint || true
 
       - name: SCP a producció
         run: |
           echo "${{ secrets.PROD_KEY }}" > ~/prod_key.pem
           chmod 600 ~/prod_key.pem
-          scp -r -o stricthostkeychecking=no -o UserKnownHostsFile=/dev/null -i "~/prod_key.pem" vue/vue-latest/dist/* ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/a22poldonpoz/web/actionspol.daw.inspedralbes.cat/public_html/
+          scp -r -o stricthostkeychecking=no -o UserKnownHostsFile=/dev/null -i "~/prod_key.pem" vue/vue-project/dist/* ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/a22poldonpoz/web/actionspol.daw.inspedralbes.cat/public_html/
