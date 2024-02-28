@@ -1,20 +1,21 @@
 name: Preparant per producció
-run-name: ${{ github.actor }} està pujant l'aplicació a PROD  🚀
+run-name: ${{ github.actor }} està pujant l'aplicació a PROD 🚀
 on: [push]
 jobs:
   Pujar-a-produccio-amb-SCP:
     runs-on: ubuntu-latest
     steps:
-      - name: Obtenint el codi del respositori
+      - name: Checkout del codi
         uses: actions/checkout@v4
 
-      - name: scp a produccio
+      - name: Instal·lar dependències i construir el projecte Vue
+        run: |
+          cd vue/vue-project
+          npm ci
+          npm run build
+
+      - name: SCP a producció
         run: |
           echo "${{ secrets.PROD_KEY }}" > ~/prod_key.pem
           chmod 600 ~/prod_key.pem
-          cd ${{ github.workspace }}
-          echo "Action desplegant a produccio" > ./web/last_deploy.txt
-          date >> ./web/last_deploy.txt
-          scp -r -o stricthostkeychecking=no -o UserKnownHostsFile=/dev/null -i "~/prod_key.pem" ./web/* ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/a22poldonpoz/web/actionspol.daw.inspedralbes.cat/public_html/
-          
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          scp -r -o stricthostkeychecking=no -o UserKnownHostsFile=/dev/null -i "~/prod_key.pem" vue/vue-project/dist/* ${{ secrets.PROD_USER }}@${{ secrets.PROD_HOST }}:/home/a22poldonpoz/web/actionspol.daw.inspedralbes.cat/public_html/
