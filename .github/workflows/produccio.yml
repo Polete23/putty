@@ -14,6 +14,11 @@ jobs:
           npm ci
           npm run build
 
+      - name: Ejecutar ESLint en el código
+        run: |
+          cd vue/vue-project
+          npm run lint
+
       - name: SCP a producció
         run: |
           echo "${{ secrets.PROD_KEY }}" > ~/prod_key.pem
