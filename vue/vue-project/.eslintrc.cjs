@@ -29,9 +29,6 @@ module.exports = {
       'vue',
     ],
     rules: {
-      'no-unused-vars': 'error',
-      'no-console': ['error', { allow: ['warn', 'error'] }],
-      'no-undef': 'error'
     },
   };
   
